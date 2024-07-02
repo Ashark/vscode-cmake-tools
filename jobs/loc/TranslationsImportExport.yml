@@ -67,11 +67,10 @@ extends:
             outDir: '$(Build.ArtifactStagingDirectory)'
             isCreatePrSelected: false
             prSourceBranchPrefix: 'locfiles'
-            packageSourceAuth: 'patAuth'
-            patVariable: '$(OneLocBuildPat)'
             LclSource: lclFilesfromPackage
             LclPackageId: 'LCL-JUNO-PROD-VCMAKE'
             lsBuildXLocPackageVersion: '7.0.30510'
+            dependencyPackageSource: '$(FeedName)'
         
         - task: CmdLine@2
           inputs:
