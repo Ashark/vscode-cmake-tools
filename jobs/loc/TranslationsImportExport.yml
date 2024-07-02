@@ -58,6 +58,11 @@ extends:
         - task: CmdLine@2
           inputs:
             script: 'yarn run translations-export'
+
+        - task: NuGetAuthenticate@1
+          displayName: Authenticate NuGet feeds
+          inputs:
+            forceReinstallCredentialProvider: true
         
         - task: OneLocBuild@2
           env:
