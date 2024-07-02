@@ -30,14 +30,10 @@ extends:
   template: azure-pipelines/MicroBuild.1ES.Official.yml@MicroBuildTemplate
   parameters:
     pool:
-      name: AzurePipelines-EO
-      image: AzurePipelinesWindows2022compliantGPT
-      os: windows
+      name: VSEngSS-MicroBuild2022-1ES
     sdl:
-      sourceAnalysisPool: 
-        name: AzurePipelines-EO
-        image: AzurePipelinesWindows2022compliantGPT
-        os: windows
+      sourceAnalysisPool:
+        name: VSEngSS-MicroBuild2022-1ES
     customBuildTags:
     - ES365AIMigrationTooling
     stages:
@@ -58,11 +54,6 @@ extends:
         - task: CmdLine@2
           inputs:
             script: 'yarn run translations-export'
-
-        - task: NuGetAuthenticate@1
-          displayName: Authenticate NuGet feeds
-          inputs:
-            forceReinstallCredentialProvider: true
         
         - task: OneLocBuild@2
           env:
@@ -72,10 +63,11 @@ extends:
             outDir: '$(Build.ArtifactStagingDirectory)'
             isCreatePrSelected: false
             prSourceBranchPrefix: 'locfiles'
+            packageSourceAuth: 'patAuth'
+            patVariable: '$(System.AccessToken)'
             LclSource: lclFilesfromPackage
             LclPackageId: 'LCL-JUNO-PROD-VCMAKE'
             lsBuildXLocPackageVersion: '7.0.30510'
-            dependencyPackageSource: '$(FeedName)'
         
         - task: CmdLine@2
           inputs:
