@@ -47,6 +47,12 @@ extends:
             artifactName: 'drop'
             publishLocation: 'Container'
         steps:
+        - task: NodeTool@0
+          displayName: Use Node 16.x
+          inputs:
+            versionSpec: 16.x
+        - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
+          displayName: Use Yarn 1.x
         - task: CmdLine@2
           inputs:
             script: 'yarn install'
@@ -54,6 +60,11 @@ extends:
         - task: CmdLine@2
           inputs:
             script: 'yarn run translations-export'
+        
+        - task: NuGetAuthenticate@1
+          displayName: Authenticate NuGet feeds
+          inputs:
+            forceReinstallCredentialProvider: true
         
         - task: OneLocBuild@2
           env:
@@ -68,6 +79,7 @@ extends:
             LclSource: lclFilesfromPackage
             LclPackageId: 'LCL-JUNO-PROD-VCMAKE'
             lsBuildXLocPackageVersion: '7.0.30510'
+            dependencyPackageSource: '$(FeedName)'
         
         - task: CmdLine@2
           inputs:
